@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "currency": "KRW",
+  "grades": {
+    "A": {
+      "color": "GREEN",
+      "grade_name": "단순 사건",
+      "report_fee": "100,000원",
+      "tax_review_fee": "선택 / 200,000원",
+      "tax_filing_fee": "세무사 별도 견적",
+      "tax_accountant_required": false
+    },
+    "B": {
+      "color": "YELLOW",
+      "grade_name": "일반 확인 사건",
+      "report_fee": "100,000원~150,000원",
+      "tax_review_fee": "200,000원",
+      "tax_filing_fee": "세무사 별도 견적",
+      "tax_accountant_required": false
+    },
+    "C": {
+      "color": "ORANGE",
+      "grade_name": "복합 검토 사건",
+      "report_fee": "150,000원~300,000원",
+      "tax_review_fee": "300,000원부터",
+      "tax_filing_fee": "세무사 별도 견적",
+      "tax_accountant_required": true
+    },
+    "D": {
+      "color": "RED",
+      "grade_name": "고위험 사건",
+      "report_fee": "200,000원 이상",
+      "tax_review_fee": "500,000원부터 또는 별도 견적",
+      "tax_filing_fee": "세무사 별도 견적",
+      "tax_accountant_required": true
+    }
+  },
+  "common_notice": "실제 양도소득세 신고대행은 모든 등급에서 세무사 별도 견적 대상입니다."
+}

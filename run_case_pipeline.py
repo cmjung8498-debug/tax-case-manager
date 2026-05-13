@@ -53,6 +53,12 @@ STEPS = [
         "required": False,
     },
     {
+        "name": "case_risk_grader",
+        "script": "case_risk_grader.py",
+        "description": "사건등급 및 수수료 기준 자동 산정",
+        "required": True,
+    },
+    {
         "name": "generate_tax_report",
         "script": "generate_tax_report.py",
         "description": "고객/부동산/세무사 리포트 생성",

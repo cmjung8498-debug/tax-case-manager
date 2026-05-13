@@ -196,7 +196,42 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("4. acquisition_price_review.json")
     lines.append("5. multi_asset_split_review.json")
     lines.append("6. redevelopment_legal_review.json")
+    lines.append("7. case_risk_grade.json")
     lines.append("")
+    
+    risk_grade_path = export_dir / "02_extract" / "case_risk_grade.json"
+    risk_grade_data = {}
+    if risk_grade_path.exists():
+        try:
+            with open(risk_grade_path, "r", encoding="utf-8") as f:
+                risk_grade_data = json.load(f)
+        except Exception:
+            pass
+
+    if risk_grade_data:
+        grade = risk_grade_data.get("grade", "미확인")
+        color = risk_grade_data.get("color", "미확인")
+        grade_name = risk_grade_data.get("grade_name", "미확인")
+        req = "Y" if risk_grade_data.get("tax_accountant_required") else "N"
+        review_fee = risk_grade_data.get("recommended_tax_review_fee", "미확인")
+        filing_fee = risk_grade_data.get("tax_filing_fee", "미확인")
+        reasons = risk_grade_data.get("reasons", [])
+        reason_str = ", ".join(reasons) if reasons else "단순 사건"
+        
+        lines.append("## 사건등급 및 수수료 기준")
+        lines.append("")
+        lines.append("본 사건의 TaxCaseManager 등급:")
+        lines.append(f"- 등급: {grade}")
+        lines.append(f"- 색상: {color}")
+        lines.append(f"- 등급명: {grade_name}")
+        lines.append(f"- 세무사 검토 필요: {req}")
+        lines.append(f"- 세무사 검토비 기준: {review_fee}")
+        lines.append(f"- 실제 신고대행 수수료: {filing_fee}")
+        lines.append(f"- 주요 사유: {reason_str}")
+        lines.append("")
+        lines.append("본 등급은 사전진단 및 업무량 판단을 위한 기준이며, 세무사 최종 수임 여부와 수수료는 별도 협의가 필요합니다.")
+        lines.append("")
+    
     lines.append("## 3. 세무사 우선 확인 항목")
     lines.append("")
     if missing_items:
@@ -424,6 +459,12 @@ def export_case(case_id, include_audio=True):
         export_dir / "02_extract",
         copied_files,
         "legal_basis_check",
+    )
+    copy_file_if_exists(
+        case_dir / "04_extract" / "case_risk_grade.json",
+        export_dir / "02_extract",
+        copied_files,
+        "case_risk_grade",
     )
     
     # Consents

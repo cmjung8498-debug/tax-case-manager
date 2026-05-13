@@ -314,6 +314,36 @@ def build_legal_basis_tax_section(legal_basis_data):
 본 시스템의 법령 DB는 사전진단 체크포인트용이며, 세부 조문 적용과 최신 개정 여부는 세무사 검토가 필요합니다."""
 
 
+def build_risk_grade_section(risk_grade_data):
+    if not risk_grade_data:
+        return "## 사건등급 및 수수료 기준\n\n- 등급 판정 모듈이 실행되지 않았습니다.\n"
+
+    grade = risk_grade_data.get("grade", "미확인")
+    color = risk_grade_data.get("color", "미확인")
+    grade_name = risk_grade_data.get("grade_name", "미확인")
+    req = "Y" if risk_grade_data.get("tax_accountant_required") else "N"
+    report_fee = risk_grade_data.get("recommended_report_fee", "미확인")
+    review_fee = risk_grade_data.get("recommended_tax_review_fee", "미확인")
+    filing_fee = risk_grade_data.get("tax_filing_fee", "미확인")
+    reasons = risk_grade_data.get("reasons", [])
+    reason_str = ", ".join(reasons) if reasons else "단순 사건"
+
+    return f"""## 사건등급 및 수수료 기준
+
+- 사건등급: {grade}
+- 색상: {color}
+- 등급명: {grade_name}
+- 세무사 검토 필요 여부: {req}
+- AI 사전진단 리포트 권장 비용: {report_fee}
+- 세무사 검토 패키지 권장 비용: {review_fee}
+- 실제 신고대행: {filing_fee}
+- 등급 판정 사유: {reason_str}
+
+주의:
+본 수수료 기준은 TaxCaseManager 기준의 안내용이며,
+실제 세무사 신고대행 수수료는 사건 난이도와 세무사 사무실 기준에 따라 별도 산정됩니다."""
+
+
 def build_40py_section():
     return """## 40평 아파트 거주주택 비과세 검토
 
@@ -449,6 +479,8 @@ def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, r
 - 위험등급: {risk_level}
 - 등급 설명: {risk_description(risk_level)}
 
+{build_risk_grade_section(risk_grade_data)}
+
 ## 3. 현재까지 확인된 주요 내용
 
 {build_fact_table(facts)}
@@ -506,6 +538,8 @@ def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, reg
 - 등급 설명: {risk_description(risk_level)}
 - 추출방식: {tax_data.get("extract_method", "미확인")}
 
+{build_risk_grade_section(risk_grade_data)}
+
 ## 3. 사실관계 확인표
 
 {build_fact_table(facts)}
@@ -558,6 +592,8 @@ def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_d
 - 위험등급: {risk_level}
 - 등급 설명: {risk_description(risk_level)}
 - 현재 판정: {verdict}
+
+{build_risk_grade_section(risk_grade_data)}
 
 ## 2. 의뢰 경로
 
@@ -623,7 +659,7 @@ def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_d
 """
 
 
-def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
+def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data, risk_grade_data):
     report_dir = case_dir / "06_reports"
     report_dir.mkdir(exist_ok=True)
 
@@ -631,9 +667,9 @@ def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data,
     office_path = report_dir / "02_office_check_report.md"
     tax_path = report_dir / "03_tax_accountant_review.md"
 
-    customer_report = build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
-    office_report = build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
-    tax_report = build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
+    customer_report = build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data, risk_grade_data)
+    office_report = build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data, risk_grade_data)
+    tax_report = build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data, risk_grade_data)
 
     with open(customer_path, "w", encoding="utf-8") as f:
         f.write(customer_report)
@@ -696,8 +732,11 @@ def main():
         
         legal_basis_path = case_dir / "04_extract" / "legal_basis_check.json"
         legal_basis_data = read_json_optional(legal_basis_path)
+        
+        risk_grade_path = case_dir / "04_extract" / "case_risk_grade.json"
+        risk_grade_data = read_json_optional(risk_grade_path)
 
-        customer_path, office_path, tax_path = write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
+        customer_path, office_path, tax_path = write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data, risk_grade_data)
         update_case_meta(case_dir)
 
         write_log(case_id, f"reports_created customer={customer_path.name} office={office_path.name} tax={tax_path.name}")
