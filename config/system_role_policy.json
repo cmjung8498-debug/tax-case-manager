@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "policy_name": "TaxCaseManager System Role and Workflow Policy",
+  "principle": "TaxCaseManager는 1차 법령 적용·쟁점 분리·리포트 생성 엔진이며, AI API는 공식 변경자료 요약 보조, 세무사는 적용 적정성 검증자이다.",
+  "roles": {
+    "tax_case_manager": {
+      "role_name": "1차 법령 적용 및 리포트 생성 엔진",
+      "allowed_functions": [
+        "사건 접수",
+        "고객 입력자료 정형화",
+        "사실관계 추출",
+        "법령 기준 DB 확인",
+        "법령 최신성 확인 결과 반영",
+        "조정대상지역 기준일별 조회",
+        "취득가액 검토",
+        "재개발·재건축 도정법 사실관계 검토",
+        "다물건 분리 검토",
+        "사건등급 산정",
+        "수수료 기준 안내",
+        "리포트 생성",
+        "DOCX 변환",
+        "세무사 ZIP 패키징",
+        "첨부서류 분류"
+      ],
+      "forbidden_claims": [
+        "세무사 검토 없는 최종 신고 가능",
+        "신고대행 완료",
+        "세무상 다툼 없음",
+        "세무사 검토 불필요"
+      ]
+    },
+    "ai_api": {
+      "role_name": "공식 변경자료 요약 보조",
+      "allowed_functions": [
+        "법령 변경사항 요약",
+        "국세청 안내 변경사항 요약",
+        "도정법 변경사항 요약",
+        "조정대상지역 공고 변경사항 요약",
+        "리포트 최신성 주석 초안 작성",
+        "세무사 확인 포인트 정리"
+      ],
+      "forbidden_functions": [
+        "최종 세법 판단",
+        "양도세 확정 계산",
+        "비과세 최종 판단",
+        "조정대상지역 최종 판정",
+        "장기임대주택 특례 최종 판단",
+        "사건등급 및 수수료 임의 변경",
+        "리포트 결론 임의 변경"
+      ]
+    },
+    "tax_accountant": {
+      "role_name": "적용 적정성 독립 검증자 및 신고대행 수임자",
+      "allowed_functions": [
+        "TaxCaseManager 법령 적용 검증",
+        "전제 사실 충족 여부 확인",
+        "증빙자료 검토",
+        "최신 법령 반영 여부 검증",
+        "적용 결론 보정",
+        "추가자료 요청",
+        "신고대행 수임 여부 결정",
+        "실제 양도소득세 신고대행"
+      ],
+      "notice": "세무사는 TaxCaseManager 결론을 형식적으로 확인하는 것이 아니라 독립적으로 검증한다."
+    }
+  },
+  "workflow": [
+    "case_intake",
+    "input_import",
+    "attachment_classification",
+    "tax_facts_extraction",
+    "legal_basis_check",
+    "legal_change_check",
+    "regulated_area_check",
+    "acquisition_price_review",
+    "multi_asset_split_review",
+    "redevelopment_legal_review",
+    "case_risk_grading",
+    "fee_notice",
+    "payment_confirmation",
+    "report_generation",
+    "docx_conversion",
+    "missing_request_generation",
+    "tax_filing_intake_pack",
+    "export_bundle",
+    "tax_accountant_independent_review",
+    "tax_filing_if_engaged"
+  ],
+  "payment_policy": {
+    "report_generation_requires_payment": true,
+    "grades_A_B_report_fee": "100,000원",
+    "grades_C_D_tax_accountant_review_required": true,
+    "tax_filing_fee": "세무사 별도 견적"
+  }
+}

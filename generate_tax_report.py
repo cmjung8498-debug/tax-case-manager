@@ -454,6 +454,24 @@ def build_evidence_section(facts):
     return "\n".join(lines)
 
 
+def build_role_and_responsibility_section():
+    return """## TaxCaseManager 역할 및 세무사 검증 안내
+
+본 리포트는 TaxCaseManager가 고객 제공자료, 공식 법령 기준 DB,
+국세청 안내, 도시 및 주거환경정비법 체크포인트,
+조정대상지역 이력 DB를 기준으로 1차 법령 적용 검토를 수행한 결과입니다.
+
+전제가 명확하고 법령상 결론이 분명한 항목은
+“전제가 사실이라면 적용 대상입니다”로 표시하였습니다.
+
+증빙 확인 또는 해석상 검토가 필요한 항목은
+“세무사 독립 검증사항”으로 분리하였습니다.
+
+세무사는 본 리포트에서 적용한 법령, 전제 사실, 증빙자료,
+최신 법령 반영 여부를 독립적으로 검증하고,
+필요한 경우 적용 결론을 보정하거나 신고대행 수임 여부를 결정합니다."""
+
+
 def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
     facts = tax_data.get("facts", {})
     missing_items = tax_data.get("missing_items", [])
@@ -500,6 +518,8 @@ def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, r
 {build_40py_section()}
 
 {build_25py_section()}
+
+{build_role_and_responsibility_section()}
 
 ## 5. 안내
 
@@ -563,6 +583,8 @@ def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, reg
 ## 5. 상담 원문 근거 문장 후보
 
 {build_evidence_section(facts)}
+
+{build_role_and_responsibility_section()}
 
 ## 6. 내부 주의사항
 
@@ -651,6 +673,8 @@ def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_d
 | 신고 필요 여부 |  |
 | 예상 주요 리스크 |  |
 | 최종 의견 |  |
+
+{build_role_and_responsibility_section()}
 
 ## 8. 주의 문구
 
