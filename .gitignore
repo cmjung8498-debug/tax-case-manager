@@ -1,0 +1,53 @@
+﻿# =========================
+# TaxCaseManager .gitignore
+# =========================
+
+# 고객 사건/민감자료
+cases/
+exports/
+inbox/
+logs/
+outputs/
+
+# 임시/작업 파일
+scratch/
+__pycache__/
+*.pyc
+*.pyo
+*.tmp
+*.bak
+
+# 음성/문서/이미지/압축
+*.zip
+*.m4a
+*.mp3
+*.wav
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.hwp
+
+# 사건별 출력 DOCX는 제외
+cases/**/09_print_forms/
+cases/**/06_reports_docx/
+
+# 환경변수/API키
+.env
+*.env
+*_secret*
+*secret*
+*api_key*
+*apikey*
+OPENAI_API_KEY*
+*.key
+
+# 로컬 설정
+config/local*.json
+config/*_local.json
+
+# 개인정보 가능성이 있는 파일
+*personal*
+*private*
+*customer*
+*client_real*

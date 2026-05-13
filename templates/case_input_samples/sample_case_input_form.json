@@ -1,0 +1,163 @@
+{
+  "case_id": "",
+  "created_at": "",
+  "input_method": "imported_json_template",
+  "client": {
+    "client_name": "홍길동",
+    "client_phone": "010-0000-0000",
+    "real_estate_office": "테스트부동산",
+    "manager_name": "김중개",
+    "consult_purpose": "양도세 사전진단"
+  },
+  "property": {
+    "property_address": "서울 강남구 테스트아파트",
+    "property_type": "아파트",
+    "land_area": "",
+    "building_area": "",
+    "ownership_type": "단독소유",
+    "ownership_share": "100%",
+    "co_owners": "",
+    "acquisition_method": "매매",
+    "acquired_date": "2020년 5월 10일",
+    "registration_date": "2020년 5월 10일",
+    "actual_payment_date": "2020년 5월 10일",
+    "sale_expected_date": "2026년 8월 30일",
+    "sale_balance_date": "2026년 8월 30일",
+    "sale_expected_price": "13억",
+    "sale_status": "계약후잔금전"
+  },
+  "household": {
+    "current_house_count": "1",
+    "spouse_house_count": "0",
+    "household_member_house_count": "0",
+    "spouse_same_household": "yes",
+    "presale_right_owned": "no",
+    "occupancy_right_owned": "no",
+    "inherited_house_owned": "no",
+    "co_inherited_house_owned": "no",
+    "officetel_owned": "no",
+    "rural_house_owned": "no",
+    "long_term_rental_house_owned": "no"
+  },
+  "residence": {
+    "lived_in": "yes",
+    "first_move_in_date": "2020년 5월 10일",
+    "final_move_out_date": "2022년 11월 10일",
+    "residence_period": "2년 6개월",
+    "currently_living": "no",
+    "resident_registration_available": "yes",
+    "utility_evidence_available": "yes",
+    "lease_contract_available": "yes"
+  },
+  "acquisition_price": {
+    "purchase_contract_available": "unknown",
+    "purchase_contract_type": "사본",
+    "bank_transfer_records_available": "unknown",
+    "acquisition_tax_records_available": "yes",
+    "acquisition_tax_base_visible": "unknown",
+    "registry_acquisition_date_confirmable": "yes",
+    "acquisition_price_unclear": "no",
+    "old_acquisition": "no",
+    "standard_market_price_needed": "no",
+    "land_grade_data_needed": "no",
+    "comparable_sale_review_needed": "no",
+    "appraisal_value_review_needed": "no",
+    "conversion_acquisition_value_review_needed": "no",
+    "deemed_acquisition_date_review_needed": "no"
+  },
+  "expenses": {
+    "expense_evidence_items": [
+      "취득세",
+      "중개수수료"
+    ]
+  },
+  "exception_flags": {
+    "temporary_two_house_possible": "no",
+    "inherited_or_gifted": "no",
+    "inherited_acquisition": "no",
+    "gifted_acquisition": "no",
+    "burdened_gift": "no",
+    "redevelopment_reconstruction": "no",
+    "member_occupancy_right_conversion": "no",
+    "joint_ownership": "no",
+    "partial_share_transfer": "no",
+    "family_transaction": "no",
+    "special_relation_transaction": "no",
+    "rental_business_history": "no",
+    "non_business_land_possible": "no",
+    "mixed_use_house": "no",
+    "contract_already_signed": "yes",
+    "balance_date_imminent": "no",
+    "tax_filing_deadline_imminent": "no",
+    "prior_tax_consultation": "no",
+    "tax_office_inquiry_history": "no"
+  },
+  "required_documents": {
+    "registry_document": "yes",
+    "purchase_contract": "unknown",
+    "sale_contract": "yes",
+    "acquisition_tax_receipt": "yes",
+    "resident_registration_abstract": "yes",
+    "resident_registration_record": "yes",
+    "brokerage_fee_receipts": "yes",
+    "legal_scrivener_fee_receipts": "unknown",
+    "repair_interior_evidence": "no",
+    "construction_contract": "no",
+    "appraisal_report": "no",
+    "standard_market_price_docs": "no",
+    "land_grade_docs": "no"
+  },
+  "client_confirmation": {
+    "confirmed_property_info": "yes",
+    "confirmed_dates": "yes",
+    "confirmed_acquisition_price_docs": "yes",
+    "confirmed_household_status": "yes",
+    "confirmed_exception_flags": "yes",
+    "unknowns_not_guessed": "yes",
+    "understands_not_final_tax_opinion": "yes",
+    "signature_received": "yes"
+  },
+  "redevelopment_details": {
+    "is_redevelopment_case": "unknown",
+    "original_property_acquired_date": "",
+    "project_implementation_approval_date": "",
+    "management_disposal_approval_date": "",
+    "regulated_area_at_management_disposal": "unknown",
+    "demolition_date": "",
+    "rights_count": "",
+    "new_units_count": "",
+    "one_house_to_multiple_rights": "unknown",
+    "actual_residence_requirement_check_needed": "unknown",
+    "replacement_house_acquired": "unknown",
+    "replacement_house_sale_date": "",
+    "sale_order_unclear": "unknown",
+    "tax_accountant_required": true
+  },
+  "asset_units": [
+    {
+      "asset_id": "A",
+      "asset_name": "신축아파트 또는 입주권 1",
+      "asset_type": "조합원입주권/분양권/신축아파트",
+      "expected_sale_date": "",
+      "expected_sale_price": "",
+      "acquisition_cost_allocation": "",
+      "expense_allocation": "",
+      "residence_period_related": "",
+      "planned_sale_order": 1,
+      "tax_review_status": "needs_review"
+    },
+    {
+      "asset_id": "B",
+      "asset_name": "신축아파트 또는 입주권 2",
+      "asset_type": "조합원입주권/분양권/신축아파트",
+      "expected_sale_date": "",
+      "expected_sale_price": "",
+      "acquisition_cost_allocation": "",
+      "expense_allocation": "",
+      "residence_period_related": "",
+      "planned_sale_order": 2,
+      "tax_review_status": "needs_review"
+    }
+  ],
+  "memo": "샘플 입력 사건"
+}

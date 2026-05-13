@@ -1,0 +1,5 @@
+﻿notice_id,notice_no,notice_title,notice_date,effective_date,action_type,source_name,source_url,download_url,verified,status,note
+MOLIT-2023-0002,국토교통부공고 제2023-2호,조정대상지역 지정 해제,2023-01-05,2023-01-05,RELEASE,MOLIT,https://www.molit.go.kr/USR/I0204/m_45/dtl.jsp?idx=17701,,Y,APPLIED,2023-01-05 해제 공고
+MOLIT-2022-RELEASE-1114,,조정대상지역 지정 해제,2022-11-14,2022-11-14,RELEASE,MOLIT,https://www.molit.go.kr/USR/I0204/m_45/lst.jsp?flag=I&gubun=&lcmspage=1&r_id=&search=%EC%A1%B0%EC%A0%95%EB%8C%80%EC%83%81%EC%A7%80%EC%97%AD&search_dept_id=&search_dept_nm=&search_regdate_e=&search_regdate_s=&srch_usr_num=&srch_usr_titl=Y&srch_usr_year=, ,N,RAW,공고번호 및 대상지역 미확인
+MOLIT-2022-1216,국토교통부공고 제2022-1216호,조정대상지역 지정 해제,2022-09-21,2022-09-26,RELEASE,MOLIT,https://www.molit.go.kr,,Y,APPLIED,2022-09-26 지정 해제 공고
+MOLIT-2022-1436,국토교통부공고 제2022-1436호,조정대상지역 지정 해제,2022-11-10,2022-11-14,RELEASE,MOLIT,https://www.molit.go.kr,,Y,APPLIED,과천시/연수구 관련 공고
