@@ -31,6 +31,10 @@ FORM_FILES = {
     "07_privacy_and_tax_accountant_consent.docx": "개인정보 수집 및 세무사 검토 전달 동의서",
     "08_required_documents_checklist.docx": "양도세 사전진단 필요서류 체크리스트",
     "09_final_client_confirmation.docx": "고객 최종 확인서",
+    "10_client_truthful_disclosure_notice.docx": "고객 제공자료 성실확인 및 불이익 고지서",
+    "11_tax_filing_delegation_and_identity_check.docx": "양도소득세 신고대행 위임 및 본인확인 안내서",
+    "12_tax_accountant_fee_scope_agreement.docx": "세무사 신고대행 수수료 및 업무범위 확인서",
+    "13_final_tax_filing_confirmation.docx": "최종 신고내용 확인서",
 }
 
 
@@ -398,6 +402,96 @@ def build_09(doc):
     add_signature_block(doc)
 
 
+def build_10(doc):
+    add_common_header_table(doc)
+    doc.add_paragraph("1. 본인은 양도소득세 사전진단 및 신고에 필요한 서류와 정보를 성실히 제공하였음을 확인합니다.")
+    doc.add_paragraph("2. 사실과 다르거나 누락된 정보로 인해 발생하는 추가 세금 및 가산세 등의 불이익은 본인에게 책임이 있음을 확인합니다.")
+    add_signature_block(doc)
+
+
+def build_11(doc):
+    add_common_header_table(doc)
+    doc.add_paragraph("1. 본인은 양도소득세 신고대행을 세무사에게 위임할 수 있음을 확인합니다.")
+    doc.add_paragraph("2. 세무사 신고대행은 사전진단 리포트 또는 세무사 검토 패키지와 별도 업무임을 확인합니다.")
+    doc.add_paragraph("3. 실제 신고대행 진행 시 세무사 사무실 기준에 따라 아래 자료가 추가로 요구될 수 있음을 확인합니다.")
+    add_check_items(doc, [
+        "홈택스 세무대리 수임동의",
+        "양도소득세 신고대행 위임장",
+        "신분증 사본",
+        "인감증명서 또는 본인서명사실확인서",
+        "인감도장 날인 또는 전자서명",
+        "매매계약서",
+        "취득계약서",
+        "필요경비 증빙",
+        "주민등록초본/등본",
+        "세무사가 요청하는 기타 자료"
+    ])
+    doc.add_paragraph("4. 본인은 세무사가 본인확인 및 위임확인이 충분하지 않다고 판단하는 경우 신고대행을 보류하거나 거절할 수 있음을 확인합니다.")
+    doc.add_paragraph("5. 본인은 세무대리 수임동의 또는 위임장 제출이 완료되지 않으면 실제 신고대행이 진행되지 않을 수 있음을 확인합니다.")
+    doc.add_paragraph("6. 본인은 양도세 신고 내용의 최종 확인 책임이 본인에게 있음을 이해하고, 세무사가 작성한 신고내용을 제출 전 확인해야 함을 확인합니다.")
+    add_signature_block(doc)
+
+
+def build_12(doc):
+    add_common_header_table(doc)
+    doc.add_paragraph("고액 부동산과 복잡 사건에서 세무사 수수료 분쟁을 방지하기 위한 확인서입니다.")
+    doc.add_paragraph("1. AI 양도세 사전진단 리포트 비용, 세무사 검토 패키지 비용, 실제 신고대행 수수료는 서로 다른 비용임을 확인합니다.")
+    doc.add_paragraph("2. 기본 세무사 검토 패키지 비용 200,000원에는 실제 양도소득세 신고대행 수수료가 포함되지 않을 수 있습니다.")
+    doc.add_paragraph("3. 실제 신고대행 수수료는 아래 요소에 따라 세무사가 별도 견적합니다.")
+    add_check_items(doc, [
+        "양도가액",
+        "취득가액 불명확 여부",
+        "필요경비 증빙 수량",
+        "주택 수 판단 난이도",
+        "조정대상지역 여부",
+        "상속/증여/부담부증여 여부",
+        "재개발·재건축/조합원입주권/분양권 여부",
+        "1주택에서 2개 이상 입주권/신축주택 발생 여부",
+        "양도 물건 수",
+        "세무조사 위험 또는 쟁점 수"
+    ])
+    doc.add_paragraph("4. 고액 부동산 또는 복잡 사건은 추가 검토비가 발생할 수 있습니다.")
+    doc.add_paragraph("5. 고객이 자료를 늦게 제출하거나 누락자료가 많을 경우 신고기한 임박 추가비 또는 긴급처리비가 발생할 수 있습니다.")
+    doc.add_paragraph("6. 세무사는 자료 부족, 쟁점 과다, 고객 확인 미이행, 위임 미완료 시 신고대행을 거절할 수 있습니다.")
+    doc.add_paragraph("7. 신고 완료 후 수정신고, 경정청구, 세무서 소명, 세무조사 대응은 별도 업무이며 별도 수수료가 발생할 수 있습니다.")
+    add_section_heading(doc, "수수료 표")
+    add_field_table(doc, [
+        ("AI 사전진단 리포트", "100,000원 (포함/별도)"),
+        ("세무사 검토 패키지", "200,000원 (포함/별도)"),
+        ("양도세 신고대행", "세무사 견적 (별도)"),
+        ("복잡사건 추가 검토", "세무사 견적 (별도)"),
+        ("수정신고/경정청구/소명대응", "세무사 견적 (별도)"),
+    ])
+    add_signature_block(doc)
+
+
+def build_13(doc):
+    add_common_header_table(doc)
+    doc.add_paragraph("세무사가 실제 신고하기 전에 고객이 최종 신고내용을 확인했음을 남기는 확인서입니다.")
+    doc.add_paragraph("1. 본인은 세무사가 작성한 양도소득세 신고내용을 제출 전 확인했습니다.")
+    doc.add_paragraph("2. 본인은 아래 항목을 확인했습니다.")
+    add_check_items(doc, [
+        "양도 부동산 주소",
+        "취득일",
+        "양도일",
+        "취득가액",
+        "양도가액",
+        "필요경비",
+        "보유기간",
+        "거주기간",
+        "주택 수",
+        "분양권/입주권/상속주택 여부",
+        "조정대상지역 여부",
+        "세액 계산 결과",
+        "납부세액",
+        "납부기한"
+    ])
+    doc.add_paragraph("3. 본인은 신고내용 중 모르는 부분이나 이견이 있는 부분을 세무사에게 즉시 알려야 함을 확인합니다.")
+    doc.add_paragraph("4. 본인이 최종 확인한 후 제출된 신고내용이라도, 고객이 제공한 자료가 사실과 다르거나 누락된 경우 추가세액, 가산세, 납부지연가산세 등이 발생할 수 있음을 확인합니다.")
+    doc.add_paragraph("5. 본인은 신고 후 세무서에서 추가자료 제출 또는 소명을 요청할 수 있음을 확인합니다.")
+    add_signature_block(doc)
+
+
 BUILDERS = {
     "01_client_tax_consult_application.docx": build_01,
     "02_property_basic_info.docx": build_02,
@@ -408,6 +502,10 @@ BUILDERS = {
     "07_privacy_and_tax_accountant_consent.docx": build_07,
     "08_required_documents_checklist.docx": build_08,
     "09_final_client_confirmation.docx": build_09,
+    "10_client_truthful_disclosure_notice.docx": build_10,
+    "11_tax_filing_delegation_and_identity_check.docx": build_11,
+    "12_tax_accountant_fee_scope_agreement.docx": build_12,
+    "13_final_tax_filing_confirmation.docx": build_13,
 }
 
 

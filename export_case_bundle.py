@@ -52,6 +52,7 @@ def ensure_clean_export_dir(case_id):
         "01_reports",
         "01_reports_docx",
         "02_extract",
+        "02_consents",
         "03_missing",
         "04_transcript",
         "05_documents",
@@ -173,6 +174,7 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("| 01_reports | 고객용/부동산용/세무사용 리포트 |")
     lines.append("| 01_reports_docx | 세무사 검토 및 출력용 DOCX 리포트 |")
     lines.append("| 02_extract | 양도세 사실관계 추출 JSON |")
+    lines.append("| 02_consents | 신고대행 위임 및 확인 서류 |")
     lines.append("| 03_missing | 누락자료 목록 및 고객 보완요청 문구 |")
     lines.append("| 04_transcript | 상담 녹취록 텍스트 |")
     lines.append("| 05_documents | 계약서, 등기부, 사진, PDF 등 증빙자료 |")
@@ -285,6 +287,19 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("최종 판단 및 신고는 세무사의 검토와 책임 하에 진행되어야 합니다.")
     lines.append("부동산 사무실은 세무 판단을 확정하지 않습니다.")
     lines.append("")
+    lines.append("## 신고대행 전환 시 필수 확인서류")
+    lines.append("")
+    lines.append("실제 양도소득세 신고대행으로 전환하는 경우, 사전진단 및 세무사 검토와 별도로 고객 위임 및 본인확인 절차가 필요할 수 있습니다.")
+    lines.append("")
+    lines.append("확인 대상:")
+    lines.append("- 고객 제공자료 성실확인 및 불이익 고지서")
+    lines.append("- 양도소득세 신고대행 위임 및 본인확인 안내서")
+    lines.append("- 세무사 신고대행 수수료 및 업무범위 확인서")
+    lines.append("- 최종 신고내용 확인서")
+    lines.append("")
+    lines.append("주의:")
+    lines.append("인감증명서 또는 본인서명사실확인서, 신분증 사본, 홈택스 수임동의 등은 세무사 사무실 기준과 사건 난이도에 따라 추가로 요구될 수 있습니다.")
+    lines.append("")
 
     readme_path = export_dir / "00_manifest" / "README_FOR_TAX_ACCOUNTANT.md"
 
@@ -388,6 +403,18 @@ def export_case(case_id, include_audio=True):
         copied_files,
         "legal_basis_check",
     )
+    
+    # Consents
+    print_forms_src_dir = case_dir / "09_print_forms"
+    consents_dst_dir = export_dir / "02_consents"
+    if print_forms_src_dir.exists():
+        for name in [
+            "10_client_truthful_disclosure_notice.docx",
+            "11_tax_filing_delegation_and_identity_check.docx",
+            "12_tax_accountant_fee_scope_agreement.docx",
+            "13_final_tax_filing_confirmation.docx",
+        ]:
+            copy_file_if_exists(print_forms_src_dir / name, consents_dst_dir, copied_files, "consent")
 
     # Missing
     missing_src_dir = case_dir / "05_missing"
