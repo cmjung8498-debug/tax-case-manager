@@ -47,6 +47,12 @@ STEPS = [
         "required": True,
     },
     {
+        "name": "redevelopment_legal_review",
+        "script": "redevelopment_legal_review.py",
+        "description": "도시 및 주거환경정비법 사실관계 검토",
+        "required": False,
+    },
+    {
         "name": "generate_tax_report",
         "script": "generate_tax_report.py",
         "description": "고객/부동산/세무사 리포트 생성",

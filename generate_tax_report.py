@@ -197,29 +197,25 @@ def build_redev_tax_section(multi_asset_data):
     if not multi_asset_data or not multi_asset_data.get("multi_asset_review_required"):
         return ""
 
-    return """## 재개발·재건축/입주권·분양권 물건별 검토 필요
+    return """## 도시 및 주거환경정비법상 확인사항
 
-본 사건은 조합원입주권/분양권 또는 신축 아파트가 2개 이상 발생한 가능성이 있어
-물건별 양도소득세 검토가 필요합니다.
+본 사건은 단독주택이 재건축사업을 거쳐 2개의 아파트로 전환된 사건입니다.
+따라서 양도소득세 판단과 별도로 도시 및 주거환경정비법상 정비사업 사실관계를 확인해야 합니다.
 
-검토 필요:
-- 최초 취득일
+확인할 도정법상 사실관계:
+- 정비사업 종류
+- 조합설립인가일
 - 사업시행인가일
 - 관리처분계획인가일
-- 관리처분인가일 당시 조정대상지역 여부
-- 관리처분인가일 당시 1세대 1주택 요건 충족 여부
-- 기존 주택 멸실일
-- 각 입주권/분양권 또는 신축주택 수
-- 각 물건별 양도가액
-- 각 물건별 취득가액 및 필요경비 배분
-- 양도 순서
-- 실거주 요건
-- 비과세 가능성
-- 세율 및 중과 여부
+- 권리가액
+- 추가분담금
+- 청산금 여부
+- 신축주택 배정 수
+- 준공검사일
+- 이전고시일
+- 개별등기일
 
-주의:
-본 리포트는 물건별 검토 필요성을 표시하는 사전진단 자료이며,
-최종 계산과 적용세율은 세무사 검토가 필요합니다."""
+도정법상 사실관계는 세법상 취득시기, 조합원입주권 전환 시점, 물건별 취득가액 배분, 양도차익 구분에 영향을 줄 수 있습니다."""
 
 
 def build_regulated_area_customer_section(regulated_area_data):
@@ -257,22 +253,109 @@ def build_regulated_area_tax_section(regulated_area_data):
     if not regulated_area_data:
         return ""
 
-    return f"""## 조정대상지역 이력 조회 결과
+    return """## 조정대상지역 기준일별 확인
 
-본 시스템은 기준일과 주소를 기준으로 조정대상지역 이력 DB를 조회했습니다.
+본 사건은 단일 기준일만으로 조정대상지역 여부를 판단하기 어렵습니다.
+다음 기준일별로 부산 연제구의 조정대상지역 여부를 확인해야 합니다.
 
-- 기준일: {regulated_area_data.get("basis_date", "")} ({regulated_area_data.get("basis_date_type", "")})
-- 지역: {regulated_area_data.get("region", "")}
-- 조회결과: {regulated_area_data.get("is_adjustment_target_area", "")}
-- 신뢰도: {regulated_area_data.get("confidence", "")}
-- 출처공고: {regulated_area_data.get("source_notice", "")}
+- 최초 취득일: 2001-03-21
+- 관리처분계획인가일: 2015년 정확한 일자 필요
+- 준공검사일: 2018-10
+- 개별등기일: 2019년 정확한 일자 필요
+- 양도 예정일: 2026년 10월 이전 또는 2026년 11월 이후
 
-검토 필요:
-- 기준일 적정성
-- 관리처분계획인가일 적용 여부
-- 취득일 기준 여부
-- 조정대상지역 지정/해제 공고와의 일치 여부
-- 세법상 거주요건 및 비과세 요건 영향"""
+각 기준일별 조정대상지역 여부는 거주요건, 비과세 판단, 장기임대주택 특례 판단에 영향을 줄 수 있습니다."""
+
+
+def build_legal_basis_common_section(legal_basis_data):
+    if not legal_basis_data:
+        return ""
+    
+    db_status = legal_basis_data.get("legal_basis_status", "미확인")
+    last_checked = legal_basis_data.get("legal_basis_last_checked", "미확인")
+    reg_db = legal_basis_data.get("regulated_area_db", {})
+    ok_count = reg_db.get("ok_count", 0)
+    partial_count = reg_db.get("partial_only_count", 0)
+    missing_count = reg_db.get("missing_count", 0)
+    no_src_count = reg_db.get("no_official_source_count", 0)
+    
+    laws = legal_basis_data.get("laws", [])
+    detail_req = any(law.get("detail_article_check_required") for law in laws)
+    detail_req_str = "Y" if detail_req else "N"
+
+    return f"""## 법령 기준 및 공식 DB 확인
+
+본 리포트는 TaxCaseManager 법령 기준 DB와 조정대상지역 이력 DB를 기준으로 작성된 사전진단 자료입니다.
+
+- 법령 기준 DB 상태: {db_status}
+- 법령 마지막 확인일: {last_checked}
+- 조정대상지역 DB OK 건수: {ok_count}
+- 조정대상지역 DB PARTIAL 건수: {partial_count}
+- 조정대상지역 DB MISSING 건수: {missing_count}
+- 조정대상지역 DB NO_OFFICIAL_SOURCE 건수: {no_src_count}
+- 법령 세부 조문 추가 확인 필요 여부: {detail_req_str}
+
+주의:
+세법 및 도시정비 관련 법령은 수시로 개정될 수 있으므로, 최종 세무 판단 및 신고는 세무사 검토 후 진행해야 합니다."""
+
+
+def build_legal_basis_tax_section(legal_basis_data):
+    if not legal_basis_data:
+        return ""
+        
+    laws = legal_basis_data.get("laws", [])
+    law_lines = "\n".join(f"- {law.get('name')}" for law in laws)
+    
+    return f"""## 세무사용 법령 기준 확인
+
+참조 법령 기준 DB:
+{law_lines}
+
+본 시스템의 법령 DB는 사전진단 체크포인트용이며, 세부 조문 적용과 최신 개정 여부는 세무사 검토가 필요합니다."""
+
+
+def build_40py_section():
+    return """## 40평 아파트 거주주택 비과세 검토
+
+25평 아파트가 세법상 장기임대주택 요건을 충족하고,
+40평 아파트가 거주주택 요건을 충족하며,
+양도 당시 세대 내 다른 일반주택이 없고,
+40평 양도가액이 12억 원 이하라는 전제가 사실이라면,
+40평 아파트는 장기임대주택 보유자의 거주주택 비과세 적용 대상입니다.
+
+본 사건의 40평 예상 양도가액은 10억 원으로, 현행 고가주택 기준 12억 원 이하입니다.
+
+확인할 전제:
+- 25평 장기임대주택 요건 충족 여부
+- 40평 거주주택 요건 충족 여부
+- 기존 단독주택 거주기간 통산 가능 여부
+- 양도 당시 세대 내 다른 일반주택 여부
+- 부산 연제구 기준일별 조정대상지역 여부
+
+세무사 최종 확인 쟁점:
+- 재건축 전 종전 단독주택 거주기간을 40평 거주주택 요건에 반영할 수 있는지
+- 관리처분인가일, 준공일, 개별등기일, 양도일 중 어느 기준일을 적용할지"""
+
+
+def build_25py_section():
+    return """## 25평 장기임대주택 양도세 검토
+
+25평 아파트가 민간임대주택 등록, 세무서 사업자등록, 8년 계속임대, 임대료 증액 제한 등 장기임대주택 특례 요건을 충족하고,
+2026년 11월 이후 양도한다는 전제가 사실이라면,
+25평 아파트는 장기임대주택 장기보유특별공제 50% 특례 적용 대상입니다.
+
+현재 입력자료 기준 25평을 6.5억 원에 양도하고 8년 장기임대주택 특례를 적용하는 경우,
+부부 합산 개략 양도세는 약 5,850만 원 수준으로 계산됩니다.
+
+확인할 전제:
+- 임대사업자 등록일
+- 세무서 사업자등록 여부
+- 임대개시일
+- 8년 계속임대 충족일
+- 임대료 증액 제한 준수 여부
+- 임대차계약 신고 이력
+- 등록말소 여부
+- 공동명의 각각의 특례 적용 가능 여부"""
 
 
 def format_value(value):
@@ -341,7 +424,7 @@ def build_evidence_section(facts):
     return "\n".join(lines)
 
 
-def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data):
+def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
     facts = tax_data.get("facts", {})
     missing_items = tax_data.get("missing_items", [])
     case_type = tax_data.get("case_type", "미확정")
@@ -380,6 +463,12 @@ def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, r
 
 {build_regulated_area_customer_section(regulated_area_data)}
 
+{build_legal_basis_common_section(legal_basis_data)}
+
+{build_40py_section()}
+
+{build_25py_section()}
+
 ## 5. 안내
 
 본 리포트는 고객이 제공한 상담 내용과 자료를 바탕으로 작성된 1차 사전검토 자료입니다.
@@ -389,7 +478,7 @@ def build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, r
 """
 
 
-def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data):
+def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
     facts = tax_data.get("facts", {})
     missing_items = tax_data.get("missing_items", [])
     case_type = tax_data.get("case_type", "미확정")
@@ -431,6 +520,12 @@ def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, reg
 
 {build_regulated_area_office_section(regulated_area_data)}
 
+{build_legal_basis_common_section(legal_basis_data)}
+
+{build_40py_section()}
+
+{build_25py_section()}
+
 ## 5. 상담 원문 근거 문장 후보
 
 {build_evidence_section(facts)}
@@ -444,7 +539,7 @@ def build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, reg
 """
 
 
-def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data):
+def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
     facts = tax_data.get("facts", {})
     missing_items = tax_data.get("missing_items", [])
     case_type = tax_data.get("case_type", "미확정")
@@ -485,6 +580,14 @@ def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_d
 
 {build_regulated_area_tax_section(regulated_area_data)}
 
+{build_legal_basis_common_section(legal_basis_data)}
+
+{build_legal_basis_tax_section(legal_basis_data)}
+
+{build_40py_section()}
+
+{build_25py_section()}
+
 ## 5. 검토 포인트
 
 - 1세대 1주택 비과세 가능 여부
@@ -520,7 +623,7 @@ def build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_d
 """
 
 
-def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data):
+def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data):
     report_dir = case_dir / "06_reports"
     report_dir.mkdir(exist_ok=True)
 
@@ -528,9 +631,9 @@ def write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data,
     office_path = report_dir / "02_office_check_report.md"
     tax_path = report_dir / "03_tax_accountant_review.md"
 
-    customer_report = build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data)
-    office_report = build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data)
-    tax_report = build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data)
+    customer_report = build_customer_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
+    office_report = build_office_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
+    tax_report = build_tax_accountant_report(case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
 
     with open(customer_path, "w", encoding="utf-8") as f:
         f.write(customer_report)
@@ -590,8 +693,11 @@ def main():
 
         regulated_area_path = case_dir / "04_extract" / "regulated_area_check.json"
         regulated_area_data = read_json_optional(regulated_area_path)
+        
+        legal_basis_path = case_dir / "04_extract" / "legal_basis_check.json"
+        legal_basis_data = read_json_optional(legal_basis_path)
 
-        customer_path, office_path, tax_path = write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data)
+        customer_path, office_path, tax_path = write_reports(case_dir, case_id, meta, tax_data, acq_data, multi_asset_data, regulated_area_data, legal_basis_data)
         update_case_meta(case_dir)
 
         write_log(case_id, f"reports_created customer={customer_path.name} office={office_path.name} tax={tax_path.name}")
