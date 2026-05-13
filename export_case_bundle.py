@@ -57,6 +57,7 @@ def ensure_clean_export_dir(case_id):
         "04_transcript",
         "05_documents",
         "06_audio",
+        "07_attachments",
     ]
 
     for subdir in subdirs:
@@ -179,6 +180,7 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("| 04_transcript | 상담 녹취록 텍스트 |")
     lines.append("| 05_documents | 계약서, 등기부, 사진, PDF 등 증빙자료 |")
     lines.append("| 06_audio | 상담 녹음파일 |")
+    lines.append("| 07_attachments | 세무사 송부용 추가 첨부 증빙서류 |")
     lines.append("")
     lines.append("## 리포트 파일 안내")
     lines.append("")
@@ -299,6 +301,26 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("")
     lines.append("주의:")
     lines.append("인감증명서 또는 본인서명사실확인서, 신분증 사본, 홈택스 수임동의 등은 세무사 사무실 기준과 사건 난이도에 따라 추가로 요구될 수 있습니다.")
+    lines.append("")
+    lines.append("## 첨부 증빙서류 안내")
+    lines.append("")
+    lines.append("본 패키지에는 고객 또는 부동산 사무실에서 제출한 증빙서류가 포함될 수 있습니다.")
+    lines.append("")
+    lines.append("첨부서류 위치:")
+    lines.append("- 07_attachments/")
+    lines.append("")
+    lines.append("주요 분류:")
+    lines.append("- 본인확인/위임")
+    lines.append("- 양도계약/매도자료")
+    lines.append("- 취득계약/경매/취득세 자료")
+    lines.append("- 필요경비/옵션/공사비 자료")
+    lines.append("- 등기부/건축물대장")
+    lines.append("- 주민등록/거주자료")
+    lines.append("- 장기임대주택 관련 자료")
+    lines.append("- 재개발·재건축 관련 자료")
+    lines.append("")
+    lines.append("주의:")
+    lines.append("첨부파일은 파일명 기준으로 1차 자동분류된 것이므로, 세무사 검토 시 최종 서류 성격을 다시 확인해야 합니다.")
     lines.append("")
 
     readme_path = export_dir / "00_manifest" / "README_FOR_TAX_ACCOUNTANT.md"
@@ -458,6 +480,17 @@ def export_case(case_id, include_audio=True):
             copied_files,
             "audio",
         )
+
+    # Attachments
+    attach_src_dir = case_dir / "11_attachments"
+    if attach_src_dir.exists() and attach_src_dir.is_dir():
+        attach_dst_dir = export_dir / "07_attachments"
+        attach_dst_dir.mkdir(exist_ok=True)
+        for cat_dir in attach_src_dir.iterdir():
+            if cat_dir.is_dir():
+                copy_dir_files(cat_dir, attach_dst_dir / cat_dir.name, copied_files, f"attachment_{cat_dir.name}")
+            elif cat_dir.is_file():
+                copy_file_if_exists(cat_dir, attach_dst_dir, copied_files, "attachment_file")
 
     manifest_path, manifest = write_manifest(
         export_dir,

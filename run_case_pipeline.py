@@ -65,6 +65,12 @@ STEPS = [
         "required": False,
     },
     {
+        "name": "attach_case_documents",
+        "script": "attach_case_documents.py",
+        "description": "세무사 송부용 첨부서류 분류",
+        "required": False,
+    },
+    {
         "name": "export_case_bundle",
         "script": "export_case_bundle.py",
         "description": "세무사 전달용 ZIP 패키지 생성",
@@ -163,6 +169,9 @@ def should_skip_step(step_name, args):
     if step_name == "export_case_bundle" and args.skip_export:
         return True
 
+    if step_name == "attach_case_documents" and not args.attach_source:
+        return True
+
     return False
 
 
@@ -175,6 +184,9 @@ def build_step_args(step_name, case_id, args):
         if args.no_audio:
             step_args.append("--no-audio")
         return step_args
+
+    if step_name == "attach_case_documents":
+        return [case_id, "--source", args.attach_source]
 
     return [case_id]
 
@@ -340,6 +352,7 @@ def main():
     parser.add_argument("--skip-export", action="store_true", help="export_case_bundle.py 단계 생략")
     parser.add_argument("--skip-missing", action="store_true", help="missing_request_message.py 단계 생략")
     parser.add_argument("--dashboard-limit", type=int, default=20, help="대시보드 콘솔 표시 사건 수")
+    parser.add_argument("--attach-source", help="첨부서류 분류 시 원본 폴더 경로")
     args = parser.parse_args()
 
     case_id = args.case_id
