@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "last_checked": "2026-05-13",
+  "description": "거주요건 및 조정대상지역 관련 체크포인트",
+  "rules": [
+    {
+      "rule_id": "REGULATED_AREA_RESIDENCE_REQUIREMENT",
+      "category": "조정대상지역 및 거주요건",
+      "required_facts": [
+        "취득일",
+        "관리처분계획인가일",
+        "권리 취득일",
+        "실제 거주기간",
+        "주민등록초본",
+        "조정대상지역 이력 DB 조회 결과"
+      ],
+      "system_modules": [
+        "regulated_area_history_check.py",
+        "regulated_area_history.csv"
+      ],
+      "report_warning": "조정대상지역 여부는 기준일에 따라 달라질 수 있으며, 세법상 효과는 세무사 검토가 필요합니다."
+    }
+  ]
+}

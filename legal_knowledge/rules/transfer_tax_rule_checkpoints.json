@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "last_checked": "2026-05-13",
+  "description": "양도소득세 사전진단용 주요 체크포인트",
+  "rules": [
+    {
+      "rule_id": "ONE_HOUSE_BASIC_REVIEW",
+      "category": "1세대 1주택 비과세 가능성",
+      "required_facts": [
+        "양도 부동산 종류",
+        "취득일",
+        "양도 예정일",
+        "보유기간",
+        "거주기간",
+        "본인 주택 수",
+        "배우자 주택 수",
+        "세대원 주택 수",
+        "분양권/입주권 보유 여부",
+        "상속주택 여부",
+        "조정대상지역 여부"
+      ],
+      "law_basis": [
+        {
+          "law_name": "소득세법",
+          "article": "세부 조문 후속 확인 필요",
+          "source": "law.go.kr"
+        },
+        {
+          "law_name": "소득세법 시행령",
+          "article": "세부 조문 후속 확인 필요",
+          "source": "law.go.kr"
+        }
+      ],
+      "report_warning": "1세대 1주택 비과세 가능성은 사전진단이며 최종 판단은 세무사 검토가 필요합니다."
+    },
+    {
+      "rule_id": "ACQUISITION_PRICE_UNCLEAR",
+      "category": "취득가액 불명확",
+      "required_facts": [
+        "매수계약서 보유 여부",
+        "금융거래 내역",
+        "취득세 과세표준 자료",
+        "감정가액 검토 필요성",
+        "환산취득가액 검토 필요성",
+        "의제취득일 검토 필요성"
+      ],
+      "law_basis": [
+        {
+          "law_name": "소득세법",
+          "article": "취득가액 및 필요경비 관련 조문 후속 확인 필요",
+          "source": "law.go.kr"
+        }
+      ],
+      "tax_accountant_required": true,
+      "report_warning": "취득가액이 불명확한 경우 임의 추정값을 확정값처럼 사용하지 않습니다."
+    }
+  ]
+}

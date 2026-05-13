@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "last_checked": "2026-05-13",
+  "description": "재개발·재건축/조합원입주권/분양권 사건 체크포인트",
+  "rules": [
+    {
+      "rule_id": "REDEVELOPMENT_RECONSTRUCTION_REVIEW",
+      "category": "재개발·재건축 고위험 검토",
+      "required_facts": [
+        "정비사업 종류",
+        "사업시행인가일",
+        "관리처분계획인가일",
+        "기존 주택 멸실일",
+        "조합원입주권 발생일",
+        "권리가액",
+        "분담금",
+        "청산금",
+        "신축주택 배정 수",
+        "관리처분인가일 당시 조정대상지역 여부"
+      ],
+      "law_basis": [
+        {
+          "law_name": "소득세법",
+          "purpose": "양도소득세 과세 및 비과세 검토",
+          "source": "law.go.kr"
+        },
+        {
+          "law_name": "소득세법 시행령",
+          "purpose": "입주권/분양권, 1세대 1주택, 거주요건 검토",
+          "source": "law.go.kr"
+        },
+        {
+          "law_name": "도시 및 주거환경정비법",
+          "purpose": "사업시행인가, 관리처분계획인가, 조합원입주권 사실관계 확인",
+          "source": "law.go.kr"
+        }
+      ],
+      "tax_accountant_required": true,
+      "urban_renewal_expert_review_recommended": true,
+      "report_warning": "재개발·재건축 사건은 세법과 도시정비법상 사실관계를 함께 확인해야 하며, 최종 판단은 세무사 검토가 필요합니다."
+    }
+  ]
+}

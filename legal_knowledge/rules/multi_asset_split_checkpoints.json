@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "last_checked": "2026-05-13",
+  "description": "1주택에서 2개 이상 입주권/분양권/신축주택이 발생한 사건의 물건별 분리 검토 기준",
+  "rules": [
+    {
+      "rule_id": "ONE_HOUSE_TO_MULTIPLE_RIGHTS",
+      "category": "물건별 양도세 분리 검토",
+      "trigger_conditions": [
+        "rights_count >= 2",
+        "new_units_count >= 2",
+        "asset_units length >= 2",
+        "one_house_to_multiple_rights = yes"
+      ],
+      "required_facts_per_asset": [
+        "물건별 양도 예정일",
+        "물건별 양도 예정가액",
+        "물건별 취득가액 배분",
+        "물건별 필요경비 배분",
+        "물건별 거주요건 관련 정보",
+        "양도 순서"
+      ],
+      "tax_accountant_required": true,
+      "report_warning": "기존 1주택에서 2개 이상 권리 또는 신축주택이 발생한 경우 물건별 분리 검토가 필요합니다."
+    }
+  ]
+}

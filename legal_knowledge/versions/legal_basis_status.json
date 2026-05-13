@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-13T16:30:16",
+  "last_checked": "2026-05-13",
+  "status": "INITIAL_BASELINE",
+  "official_sources": [
+    "국가법령정보센터",
+    "국가법령정보 공동활용 API",
+    "국토교통부 행정규칙/공고"
+  ],
+  "laws": [
+    {
+      "name": "소득세법",
+      "source": "law.go.kr",
+      "status": "summary_created",
+      "detail_article_check_required": true
+    },
+    {
+      "name": "소득세법 시행령",
+      "source": "law.go.kr",
+      "status": "summary_created",
+      "detail_article_check_required": true
+    },
+    {
+      "name": "조세특례제한법",
+      "source": "law.go.kr",
+      "status": "summary_created",
+      "detail_article_check_required": true
+    },
+    {
+      "name": "도시 및 주거환경정비법",
+      "source": "law.go.kr",
+      "status": "summary_created",
+      "detail_article_check_required": true
+    },
+    {
+      "name": "도시 및 주거환경정비법 시행령",
+      "source": "law.go.kr",
+      "status": "summary_created",
+      "detail_article_check_required": true
+    }
+  ],
+  "regulated_area_history_db": {
+    "status": "validated",
+    "note": "regulated_area_history.csv 및 audit 결과를 별도 확인"
+  },
+  "warning": "본 법령 기준 DB는 사전진단용이며 최종 세무 판단은 세무사 검토가 필요합니다."
+}
