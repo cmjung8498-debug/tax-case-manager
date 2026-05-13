@@ -50,6 +50,7 @@ def ensure_clean_export_dir(case_id):
     subdirs = [
         "00_manifest",
         "01_reports",
+        "01_reports_docx",
         "02_extract",
         "03_missing",
         "04_transcript",
@@ -170,11 +171,27 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("| 폴더 | 내용 |")
     lines.append("|---|---|")
     lines.append("| 01_reports | 고객용/부동산용/세무사용 리포트 |")
+    lines.append("| 01_reports_docx | 세무사 검토 및 출력용 DOCX 리포트 |")
     lines.append("| 02_extract | 양도세 사실관계 추출 JSON |")
     lines.append("| 03_missing | 누락자료 목록 및 고객 보완요청 문구 |")
     lines.append("| 04_transcript | 상담 녹취록 텍스트 |")
     lines.append("| 05_documents | 계약서, 등기부, 사진, PDF 등 증빙자료 |")
     lines.append("| 06_audio | 상담 녹음파일 |")
+    lines.append("")
+    lines.append("## 리포트 파일 안내")
+    lines.append("")
+    lines.append("본 패키지에는 Markdown 리포트와 Word(DOCX) 리포트가 함께 포함되어 있습니다.")
+    lines.append("")
+    lines.append("- Markdown 리포트: 시스템 원본 리포트")
+    lines.append("- DOCX 리포트: 세무사 검토 및 출력용 문서")
+    lines.append("")
+    lines.append("우선 확인 권장 파일:")
+    lines.append("1. 03_tax_accountant_review.docx")
+    lines.append("2. legal_basis_check.json")
+    lines.append("3. regulated_area_check.json")
+    lines.append("4. acquisition_price_review.json")
+    lines.append("5. multi_asset_split_review.json")
+    lines.append("6. redevelopment_legal_review.json")
     lines.append("")
     lines.append("## 3. 세무사 우선 확인 항목")
     lines.append("")
@@ -227,6 +244,30 @@ def write_readme(export_dir, case_id, manifest):
     lines.append("본 패키지는 취득가액을 확정하지 않으며,")
     lines.append("최종 취득가액 산정은 세무사 검토가 필요합니다.")
     lines.append("")
+    
+    legal_basis_path = export_dir / "02_extract" / "legal_basis_check.json"
+    legal_basis_data = {}
+    if legal_basis_path.exists():
+        try:
+            with open(legal_basis_path, "r", encoding="utf-8") as f:
+                legal_basis_data = json.load(f)
+        except Exception:
+            pass
+
+    if legal_basis_data:
+        lines.append("## 법령 기준 확인")
+        lines.append("")
+        lines.append(f"- 법령 DB 상태: {legal_basis_data.get('legal_basis_status', '미확인')}")
+        lines.append(f"- 마지막 확인일: {legal_basis_data.get('legal_basis_last_checked', '미확인')}")
+        reg_db = legal_basis_data.get("regulated_area_db", {})
+        lines.append(f"- 조정대상지역 DB 감사 상태: OK {reg_db.get('ok_count', 0)}건, PARTIAL {reg_db.get('partial_only_count', 0)}건")
+        
+        laws = legal_basis_data.get("laws", [])
+        detail_req = any(law.get("detail_article_check_required") for law in laws)
+        lines.append(f"- 세부 조문 확인 필요: {'Y' if detail_req else 'N'}")
+        tax_rev = "Y" if legal_basis_data.get("tax_accountant_review_required") else "N"
+        lines.append(f"- 세무사 최종 검토 필요: {tax_rev}")
+        lines.append("")
     
     lines.append("## 4. 권장 검토 순서")
     lines.append("")
@@ -304,6 +345,17 @@ def export_case(case_id, include_audio=True):
         "03_tax_accountant_review.md",
     ]:
         copy_file_if_exists(report_src_dir / name, report_dst_dir, copied_files, "report")
+        
+    # DOCX Reports
+    docx_src_dir = case_dir / "06_reports_docx"
+    docx_dst_dir = export_dir / "01_reports_docx"
+    if docx_src_dir.exists():
+        for name in [
+            "01_customer_summary.docx",
+            "02_office_check_report.docx",
+            "03_tax_accountant_review.docx",
+        ]:
+            copy_file_if_exists(docx_src_dir / name, docx_dst_dir, copied_files, "report_docx")
 
     # Extract
     copy_file_if_exists(
@@ -329,6 +381,12 @@ def export_case(case_id, include_audio=True):
         export_dir / "02_extract",
         copied_files,
         "regulated_area_check",
+    )
+    copy_file_if_exists(
+        case_dir / "04_extract" / "legal_basis_check.json",
+        export_dir / "02_extract",
+        copied_files,
+        "legal_basis_check",
     )
 
     # Missing

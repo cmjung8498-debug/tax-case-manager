@@ -23,6 +23,12 @@ STEPS = [
         "required": True,
     },
     {
+        "name": "legal_basis_manager",
+        "script": "legal_basis_manager.py",
+        "description": "법령 기준일 및 이력 DB 확인",
+        "required": True,
+    },
+    {
         "name": "regulated_area_history_check",
         "script": "regulated_area_history_check.py",
         "description": "조정대상지역 이력 조회",
@@ -45,6 +51,12 @@ STEPS = [
         "script": "generate_tax_report.py",
         "description": "고객/부동산/세무사 리포트 생성",
         "required": True,
+    },
+    {
+        "name": "convert_reports_to_docx",
+        "script": "convert_reports_to_docx.py",
+        "description": "리포트 DOCX 변환",
+        "required": False,
     },
     {
         "name": "missing_request_message",
@@ -300,6 +312,7 @@ def print_summary(case_id, results, verdict):
         case_dir / "02_transcript" / "transcript_meta.json",
         case_dir / "08_cost" / "api_usage.json",
         case_dir / "08_cost" / "api_usage_summary.md",
+        case_dir / "04_extract" / "legal_basis_check.json",
         case_dir / "04_extract" / "tax_facts.json",
         case_dir / "04_extract" / "acquisition_price_review.json",
         case_dir / "05_missing" / "acquisition_price_missing_items.md",
